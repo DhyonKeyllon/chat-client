@@ -68,7 +68,7 @@ const ChatRoomComponent = ({
           disabled={!selectedContact}
         />
         {selectedContact && (
-          <ButtonComponent disabled={!selectedContact || !inputMessage} onClick={() => void handleSendMessage()}>
+          <ButtonComponent disabled={!selectedContact || !inputMessage} onClick={void handleSendMessage}>
             <MdSendFill />
           </ButtonComponent>
         )}
