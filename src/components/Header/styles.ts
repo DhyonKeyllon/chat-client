@@ -13,4 +13,8 @@ const Container = styled.div`
   border-bottom: 2px solid ${(props) => props.theme.colors.primary};
 `;
 
-export { Container };
+const Title = styled.h2`
+  white-space: nowrap;
+`;
+
+export { Container, Title };

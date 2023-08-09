@@ -16,4 +16,22 @@ const Content = styled.div`
   height: calc(100vh - 48px);
 `;
 
-export { Container, Content };
+const ProfileText = styled.span`
+  margin-right: 8px;
+  font-size: 16px;
+  font-weight: 500;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: end;
+
+  width: calc(100% - 122px);
+`;
+
+export { Container, Content, ProfileText, ProfileContainer };

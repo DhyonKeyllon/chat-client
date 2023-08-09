@@ -1,26 +1,25 @@
 import { styled } from "styled-components";
 
-const Container = styled.div`
-  justify-self: center;
-
+const Container = styled.div<{ $isSelectedContact?: boolean }>`
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  max-width: 400px;
-  height: 100%;
-`;
-
-const ChatContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 16px 14px;
-  gap: 16px;
-
-  overflow-y: auto;
+  flex-direction: row;
 
   height: 100%;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+
+    ${(props) =>
+      props.$isSelectedContact &&
+      `
+      height: 100%;
+      width: 100%;
+    `}
+  }
 `;
 
-export { Container, ChatContent };
+export { Container };

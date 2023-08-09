@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Container } from "./styles";
+import { Container, Title } from "./styles";
 
 type HeaderComponentProps = {
   title?: string;
@@ -10,7 +10,7 @@ type HeaderComponentProps = {
 const HeaderComponent = ({ title, children }: HeaderComponentProps) => {
   return (
     <Container>
-      <h2>{title}</h2>
+      <Title>{title}</Title>
       {children}
     </Container>
   );

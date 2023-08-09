@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import ButtonComponent from "../../components/Button";
 import InputComponent from "../../components/Input";
 
-import { Container } from "./styles";
 import { AuthContext } from "../../contexts/AuthContext";
 import LinkComponent from "../../components/Link";
 import AlertComponent from "../../components/InfoText";
 import { ETextType } from "../../components/InfoText/enums";
+
+import { Container } from "./styles";
 
 function HomePage() {
   const { signIn, user } = useContext(AuthContext);

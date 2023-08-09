@@ -18,5 +18,6 @@ export default {
     white: "#fff",
     gray200: "#59748E",
     secondary: "#B5E5E0",
+    hover: "#EDFEFC",
   },
 };

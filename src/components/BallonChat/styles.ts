@@ -10,5 +10,5 @@ export const Container = styled.div<{ $me: boolean }>`
   border-radius: 2px;
 
   background-color: ${({ $me, theme }) =>
-    $me ? theme.colors.backgroundInfoSecondary : theme.colors.backgroundInfoPrimary};
+    $me ? theme.colors.backgroundSecondary : theme.colors.backgroundInfoSecondary};
 `;

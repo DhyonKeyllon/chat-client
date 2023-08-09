@@ -21,6 +21,7 @@ declare module "styled-components" {
       white: string;
       gray200: string;
       secondary: string;
+      hover: string;
     };
   }
 }

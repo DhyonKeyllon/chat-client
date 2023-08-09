@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Label = styled.label`
   position: relative;
   display: inline-block;
-  width: 40px;
+  min-width: 40px;
   height: 24px;
 
   input:checked + span {

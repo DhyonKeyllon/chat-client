@@ -1,7 +1,17 @@
-import { Container } from "./styles";
+import { List, ListItem } from "./styles";
 
-const ContactsComponents = () => {
-  return <Container></Container>;
+type ContactsComponentProps = {
+  children: React.ReactNode[];
 };
 
-export default ContactsComponents;
+const ContactsComponent = ({ children }: ContactsComponentProps) => {
+  return (
+    <List>
+      {children.map((element) => (
+        <ListItem>{element}</ListItem>
+      ))}
+    </List>
+  );
+};
+
+export default ContactsComponent;

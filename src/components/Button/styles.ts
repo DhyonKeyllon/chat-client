@@ -10,7 +10,7 @@ const Button = styled.button<{ $height?: string; $width?: string }>`
 
   color: ${(props) => props.theme.colors.secondary};
   background: ${(props) => props.theme.colors.backgroundSecondary};
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 1px 1px rgba(7, 5, 2, 0.03);
 
   border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -26,9 +26,8 @@ const Button = styled.button<{ $height?: string; $width?: string }>`
   transition-duration: 150ms;
 
   &:hover {
-    background: ${(props) => props.theme.colors.primary};
-    color: ${(props) => props.theme.colors.backgroundInfoSecondary};
-    box-shadow: 0px 2px 2px ${(props) => props.theme.colors.backgroundInfoPrimary};
+    background: ${(props) => props.theme.colors.hover};
+    color: ${(props) => props.theme.colors.primary};
   }
 
   &:disabled {

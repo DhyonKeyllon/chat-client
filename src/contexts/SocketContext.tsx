@@ -1,14 +1,12 @@
 import React, { createContext, useEffect } from "react";
 import io, { Socket } from "socket.io-client";
+import { SERVER_BASE_URL } from "../services/api/baseUrl";
 
-// Defina os tipos para o contexto e o socket
-export interface SocketContextType {
+export interface ISocketContext {
   socket: Socket | null;
 }
 
-export const SocketContext = createContext<SocketContextType>({ socket: null });
-
-const SOCKET_SERVER_URL = "http://localhost:8080";
+export const SocketContext = createContext<ISocketContext>({ socket: null });
 
 type SocketProviderProps = {
   children: React.ReactNode;
@@ -18,7 +16,7 @@ const SocketProvider = ({ children }: SocketProviderProps) => {
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
   useEffect(() => {
-    const newSocket = io(SOCKET_SERVER_URL);
+    const newSocket = io(SERVER_BASE_URL);
     setSocket(newSocket);
 
     return () => {
