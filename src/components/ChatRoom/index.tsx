@@ -36,7 +36,7 @@ const ChatRoomComponent = ({
     messagesEndRef.current?.scrollIntoView();
   }, [messages]);
 
-  if (!user) return null;
+  if (!user) return <></>;
 
   return (
     <Container>
@@ -68,7 +68,7 @@ const ChatRoomComponent = ({
           disabled={!selectedContact}
         />
         {selectedContact && (
-          <ButtonComponent disabled={!selectedContact || !inputMessage} onClick={void handleSendMessage}>
+          <ButtonComponent disabled={!selectedContact || !inputMessage} onClick={handleSendMessage}>
             <MdSendFill />
           </ButtonComponent>
         )}

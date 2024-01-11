@@ -67,8 +67,6 @@ function ChatPage() {
     if (!socket) return;
     if (!inputMessage) return;
 
-    console.log("entrou no handleSendMessage");
-
     try {
       const channel = createChannel({ sender: user.id, receiver: selectedContact.id });
 
@@ -76,6 +74,7 @@ function ChatPage() {
         sender: user.id,
         text: inputMessage,
         receiver: selectedContact.id,
+        token: localStorage.getItem("token") as string,
       });
 
       if (response.messages && response.messages.length > 0) {
@@ -98,12 +97,20 @@ function ChatPage() {
 
       const channel = createChannel({ sender: user.id, receiver: selectedUser.id });
 
-      const response = await messageApi.getMessagesBetweenUsers({ sender: user.id, receiver: selectedUser.id });
+      const response = await messageApi.getMessagesBetweenUsers({
+        sender: user.id,
+        receiver: selectedUser.id,
+        token: localStorage.getItem("token") as string,
+      });
 
       if (response.messages && response.messages.length > 0) {
         setMessages(response.messages);
       } else {
-        await messageApi.createMessage({ sender: user.id, receiver: selectedUser.id });
+        await messageApi.createMessage({
+          sender: user.id,
+          receiver: selectedUser.id,
+          token: localStorage.getItem("token") as string,
+        });
       }
 
       socket.emit("join", channel);
@@ -112,7 +119,7 @@ function ChatPage() {
     }
   };
 
-  if (!user) return null;
+  if (!user) return <></>;
 
   return (
     <Container $isSelectedContact={false}>
@@ -126,6 +133,7 @@ function ChatPage() {
             )
         )}
       </ContactsComponent>
+
       <ChatRoomComponent
         handleSendMessage={handleSendMessage}
         inputMessage={inputMessage}

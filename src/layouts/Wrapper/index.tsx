@@ -18,6 +18,7 @@ type WrapperProps = {
 
 const WrapperComponent = ({ children }: WrapperProps) => {
   const { user } = useAuth();
+
   const [theme, setTheme] = usePersistedState<DefaultTheme>("theme", light);
   const [checked, setChecked] = usePersistedState<boolean>("checked", false);
 

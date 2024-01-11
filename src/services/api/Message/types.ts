@@ -6,6 +6,7 @@ export type Message = {
 // INPUTS
 
 export interface ICreateMessageInput {
+  token: string;
   sender: string;
   receiver: string;
   text?: string;

@@ -12,7 +12,7 @@ import HomePage from "./routes/home";
 import { SocketProvider } from "./contexts/SocketContext";
 import ChatPage from "./routes/chat";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <AuthProvider>
       <WrapperComponent>

@@ -13,13 +13,21 @@ export class MessagesApi extends Api {
     return MessagesApi.api;
   }
 
-  public async createMessage({ sender, receiver, text }: ICreateMessageInput): Promise<IMessageResponse> {
+  public async createMessage({ sender, receiver, text, token }: ICreateMessageInput): Promise<IMessageResponse> {
     try {
-      const response: AxiosResponse<IMessageResponse> = await this.httpClient.post("/messages", {
-        sender,
-        receiver,
-        text,
-      });
+      const response: AxiosResponse<IMessageResponse> = await this.httpClient.post(
+        "/messages",
+        {
+          sender,
+          receiver,
+          text,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const { channel, messages } = response.data;
 
@@ -32,9 +40,14 @@ export class MessagesApi extends Api {
   public async getMessagesBetweenUsers({
     receiver,
     sender,
+    token,
   }: Omit<ICreateMessageInput, "text">): Promise<IMessageResponse> {
     try {
-      const response: AxiosResponse<IMessageResponse> = await this.httpClient.get(`/messages/${sender}/${receiver}`);
+      const response: AxiosResponse<IMessageResponse> = await this.httpClient.get(`/messages/${sender}/${receiver}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const { channel, messages } = response.data;
 
