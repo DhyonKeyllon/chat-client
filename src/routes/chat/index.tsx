@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { IUser } from "../../services/api/User/types";
@@ -11,9 +11,7 @@ import messageApi from "../../services/api/Message";
 import userApi from "../../services/api/User";
 import createChannel from "../../utils/createChannel";
 
-import ContactsComponent from "../../components/Contacts";
 import ChatRoomComponent from "../../components/ChatRoom";
-import ButtonComponent from "../../components/Button";
 
 import { Container } from "./styles";
 
@@ -24,7 +22,10 @@ function ChatPage() {
   const { user } = useAuth();
 
   const [contacts, setContacts] = useState<Omit<IUser, "email">[]>([]);
-  const [selectedContact, setSelectedContact] = useState<Omit<IUser, "email"> | null>(null);
+  const [selectedContact, setSelectedContact] = useState<Omit<
+    IUser,
+    "email"
+  > | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
 
@@ -49,18 +50,22 @@ function ChatPage() {
     };
   }, [socket, user]);
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const contacts = await userApi.getUsers();
-        setContacts(contacts.users);
-      } catch (error) {
-        console.error("Error fetching contacts:", error);
-      }
-    };
+  const fetchContacts = useCallback(async () => {
+    try {
+      const contacts = await userApi.getUsers();
+      setContacts(contacts.users);
 
-    void fetchContacts();
-  }, []);
+      console.log({
+        contacts,
+      });
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+    }
+  }, [setContacts]);
+
+  useEffect(() => {
+    fetchContacts();
+  }, [fetchContacts]);
 
   const handleSendMessage = async () => {
     if (!user || !selectedContact) return;
@@ -68,7 +73,10 @@ function ChatPage() {
     if (!inputMessage) return;
 
     try {
-      const channel = createChannel({ sender: user.id, receiver: selectedContact.id });
+      const channel = createChannel({
+        sender: user.id,
+        receiver: selectedContact.id,
+      });
 
       const response = await messageApi.createMessage({
         sender: user.id,
@@ -80,7 +88,10 @@ function ChatPage() {
       if (response.messages && response.messages.length > 0) {
         socket.emit("message", { channel, content: inputMessage, id: user.id });
 
-        setMessages((prevMessages) => [...prevMessages, { sender: user.id, text: inputMessage }]);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { sender: user.id, text: inputMessage },
+        ]);
       }
 
       setInputMessage("");
@@ -95,7 +106,10 @@ function ChatPage() {
     try {
       setSelectedContact(selectedUser);
 
-      const channel = createChannel({ sender: user.id, receiver: selectedUser.id });
+      const channel = createChannel({
+        sender: user.id,
+        receiver: selectedUser.id,
+      });
 
       const response = await messageApi.getMessagesBetweenUsers({
         sender: user.id,
@@ -123,23 +137,15 @@ function ChatPage() {
 
   return (
     <Container $isSelectedContact={false}>
-      <ContactsComponent>
-        {contacts.map(
-          (contact) =>
-            contact.id !== user.id && (
-              <ButtonComponent key={contact.id} onClick={() => void connectToChannel(contact)}>
-                {contact.name}
-              </ButtonComponent>
-            )
-        )}
-      </ContactsComponent>
-
       <ChatRoomComponent
         handleSendMessage={handleSendMessage}
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
         messages={messages}
         selectedContact={selectedContact}
+        contacts={contacts}
+        connectToChannel={connectToChannel}
+        setSelectedContact={setSelectedContact}
       />
     </Container>
   );

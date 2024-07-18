@@ -12,6 +12,8 @@ import { MdSendFill } from "../Icons/Custom";
 
 import { ChatContent, Container } from "./styles";
 import { useEffect, useRef } from "react";
+import ContactsComponent from "../Contacts";
+import { FaArrowLeft } from "react-icons/fa6";
 
 type ChatRoomComponentProps = {
   messages: Message[] | [];
@@ -19,14 +21,22 @@ type ChatRoomComponentProps = {
   inputMessage: string;
   setInputMessage: React.Dispatch<React.SetStateAction<string>>;
   selectedContact: Omit<IUser, "email"> | null;
+  setSelectedContact: React.Dispatch<
+    React.SetStateAction<Omit<IUser, "email"> | null>
+  >;
+  contacts: Omit<IUser, "email">[];
+  connectToChannel: (selectedUser: Omit<IUser, "email">) => Promise<void>;
 };
 
 const ChatRoomComponent = ({
   selectedContact,
+  setSelectedContact,
   messages,
   handleSendMessage,
   inputMessage,
   setInputMessage,
+  contacts,
+  connectToChannel,
 }: ChatRoomComponentProps) => {
   const { user } = useAuth();
 
@@ -40,21 +50,56 @@ const ChatRoomComponent = ({
 
   return (
     <Container>
-      <HeaderComponent title={selectedContact ? selectedContact.name : "Selecione um contato"} />
+      <HeaderComponent
+        title={selectedContact ? selectedContact.name : "Selecione um contato"}
+        icon={
+          selectedContact && (
+            <FaArrowLeft onClick={() => setSelectedContact(null)} />
+          )
+        }
+      />
+
       <ChatContent>
-        {messages?.map(
-          (message, index) =>
-            !!message.text && (
-              <BallonChatComponent me={message.sender === user.id} key={`${index}-chat-ballon`}>
-                {message.text}
-              </BallonChatComponent>
-            )
+        {selectedContact ? (
+          <>
+            {messages?.map(
+              (message, index) =>
+                !!message.text && (
+                  <BallonChatComponent
+                    me={message.sender === user.id}
+                    key={`${index}-chat-ballon`}
+                  >
+                    {message.text}
+                  </BallonChatComponent>
+                )
+            )}
+          </>
+        ) : (
+          <ContactsComponent>
+            {contacts.map(
+              (contact) =>
+                contact.id !== user.id && (
+                  <ButtonComponent
+                    key={contact.id}
+                    onClick={() => void connectToChannel(contact)}
+                  >
+                    {contact.name}
+                  </ButtonComponent>
+                )
+            )}
+          </ContactsComponent>
         )}
+
         <div ref={messagesEndRef} />
       </ChatContent>
+
       <BottomBarComponent>
         <InputComponent
-          placeholder={selectedContact ? "Digite sua mensagem" : "Aguardando seleção de contato..."}
+          placeholder={
+            selectedContact
+              ? "Digite sua mensagem"
+              : "Aguardando seleção de contato..."
+          }
           onChange={(e) => {
             setInputMessage(e.target.value);
           }}
@@ -68,7 +113,12 @@ const ChatRoomComponent = ({
           disabled={!selectedContact}
         />
         {selectedContact && (
-          <ButtonComponent disabled={!selectedContact || !inputMessage} onClick={handleSendMessage}>
+          <ButtonComponent
+            disabled={!selectedContact || !inputMessage}
+            onClick={() => {
+              handleSendMessage();
+            }}
+          >
             <MdSendFill />
           </ButtonComponent>
         )}

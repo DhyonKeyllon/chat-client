@@ -11,6 +11,12 @@ const Container = styled.div`
 
   background-color: ${(props) => props.theme.colors.backgroundSecondary};
   border-bottom: 2px solid ${(props) => props.theme.colors.primary};
+
+  & svg {
+    cursor: pointer;
+    font-size: 24px;
+    color: ${(props) => props.theme.colors.primary};
+  }
 `;
 
 const Title = styled.h2`

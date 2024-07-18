@@ -1,25 +1,18 @@
 import { styled } from "styled-components";
 
 const Container = styled.div<{ $isSelectedContact?: boolean }>`
-  display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   height: 100%;
   width: 100%;
+  max-width: 768px;
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-
-    height: 100%;
-    width: 100%;
-
-    ${(props) =>
-      props.$isSelectedContact &&
-      `
+  ${(props) =>
+    props.$isSelectedContact &&
+    `
       height: 100%;
       width: 100%;
     `}
-  }
 `;
 
 export { Container };

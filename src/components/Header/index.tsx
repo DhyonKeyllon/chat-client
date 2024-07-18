@@ -5,11 +5,13 @@ import { Container, Title } from "./styles";
 type HeaderComponentProps = {
   title?: string;
   children?: ReactNode;
+  icon?: ReactNode;
 };
 
-const HeaderComponent = ({ title, children }: HeaderComponentProps) => {
+const HeaderComponent = ({ title, icon, children }: HeaderComponentProps) => {
   return (
     <Container>
+      {icon}
       <Title>{title}</Title>
       {children}
     </Container>
